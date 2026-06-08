@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-DIR="/home/ubuntu/CWM-FDI/"
+DIR="/home/ubuntu/Documents/CWM/CWM-FDI/"
 INPUT="${1:-out.perf}"
 OUTPUT="${2:-flamegraph.svg}"
 
