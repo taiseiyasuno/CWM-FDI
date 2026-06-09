@@ -5,10 +5,9 @@ import sys
 
 # parameters to modify 
 filename=f"/home/ubuntu/Documents/CWM/CWM-FDI/assignment2/{sys.argv[1]}.txt"
-label='Python'
+label='C'
 xlabel = 'Time gap (ns)'
 ylabel = 'Probability'
-title=f'CDF of time gaps (ns) ({label}) (all values)'
 fig_name=f'{sys.argv[2]}.png'
 bins=100 #adjust the number of bins to your plot
 
@@ -28,18 +27,21 @@ per_99 = np.nanpercentile(t, 99)
 #plt.hist(t[:], bins, density=True, histtype='step', cumulative=True, label=label)
 
 ## comment the lines above and uncomment the 4 lines below for a nicer CDF
-n = np.arange(1,len(t)+1) / float(len(t))
 
-if sys.argv[3] == 100:
+if int(sys.argv[3]) == 100:
     ts = np.sort(t)
-elif sys.argv[3] == 99:
+    title=f'CDF of time gaps (ns) ({label}) (all values)'
+elif int(sys.argv[3]) == 99:
     t_99 = t[t <= per_99]
     ts = np.sort(t_99)
+    title=f'CDF of time gaps (ns) ({label}) (99th percentile)'
 else:
     t_90 = t[t <= per_90]
     ts = np.sort(t_90)
+    title=f'CDF of time gaps (ns) ({label}) (90th percentile)'
 
-ts = np.sort(t)
+n = np.arange(1,len(ts)+1) / float(len(ts))
+
 fig, ax = plt.subplots()
 ax.step(ts,n)
 
