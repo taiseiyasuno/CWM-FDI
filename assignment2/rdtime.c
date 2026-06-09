@@ -81,8 +81,7 @@ double cycles_to_ns(uint64_t cycles, double cpu_freq_ghz) {
 }
 
 /*
- * Write a list of values to a file, one per line.
- *
+ * Write a list of values to a file, one per line. Note that it converts to ns from cycles. 
  * Mirrors write_list_to_file() in rdtime.py so the C and Python
  * tools produce comparable output files.
  *
@@ -94,7 +93,7 @@ double cycles_to_ns(uint64_t cycles, double cpu_freq_ghz) {
  * Exits:
  *     Terminates the program if the file cannot be opened.
  */
-void write_list_to_file(const uint64_t *values, size_t count, const char *filename) {
+void write_list_to_file(const uint64_t *values, size_t count, const char *filename, double cpu_freq_ghz) {
     FILE *fp = fopen(filename, "w");
     if (!fp) {
         perror("fopen");
@@ -102,7 +101,9 @@ void write_list_to_file(const uint64_t *values, size_t count, const char *filena
     }
 
     for (size_t i = 0; i < count; i++) {
-        fprintf(fp, "%llu\n", (unsigned long long)values[i]);
+	// Uncomment the following line if you do not wish to convert to ns
+	double ns_val = cycles_to_ns((values[i]), cpu_freq_ghz);
+        fprintf(fp, "%llu\n", (unsigned long long)ns_val);
     }
 
     fclose(fp);
@@ -124,12 +125,12 @@ void write_list_to_file(const uint64_t *values, size_t count, const char *filena
  *                NULL to skip writing.
  *
  * Returns:
- *     Minimum consecutive TSC difference in CPU cycles.
+ *     Minimum consecutive TSC difference in CPU cycles (returns it in ns, depending on the write_list_to_file code).
  *
  * Exits:
  *     Terminates the program on invalid input or allocation failure.
  */
-uint64_t min_consecutive_diff(size_t num, const char *filename) {
+uint64_t min_consecutive_diff(size_t num, const char *filename, double cpu_freq_ghz) {
     if (num < 2) {
         fprintf(stderr, "num must be at least 2\n");
         exit(1);
@@ -175,7 +176,7 @@ uint64_t min_consecutive_diff(size_t num, const char *filename) {
      * Write the differences to file, similar to rdtime.py.
      */
     if (filename) {
-        write_list_to_file(diffs, num - 1, filename);
+        write_list_to_file(diffs, num - 1, filename, cpu_freq_ghz);
     }
 
     free(diffs);
@@ -216,7 +217,7 @@ int main(int argc, char **argv) {
 
     double cpu_freq_ghz = read_cpu_freq_ghz();
 
-    uint64_t cycles = min_consecutive_diff(num, filename);
+    uint64_t cycles = min_consecutive_diff(num, filename, cpu_freq_ghz);
 
     printf("CPU frequency: %.3f GHz\n", cpu_freq_ghz);
 

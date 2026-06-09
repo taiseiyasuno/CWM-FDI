@@ -1,4 +1,5 @@
 import time
+import sys
 
 #Returns a single timestamp counter read
 
@@ -42,7 +43,7 @@ def get_min_time_diff(num,filename):
 	prev = time.perf_counter_ns()
 	min_diff = None
 	diff=[0]*num
-	for i in range(num - 1):
+	for i in range(num):
 		curr = time.perf_counter_ns()
 		diff[i] = curr - prev
 		if min_diff is None or diff[i] < min_diff:
@@ -55,12 +56,12 @@ def get_min_time_diff(num,filename):
 	
 if __name__ == "__main__":
 	filename = "time_py.txt"
-	num = 100
-	counter = get_cpu_time_counter()
-	print(f"CPU time counter: {counter} ns")
-	counter2 = get_cpu_time_counter()
-	print(f"CPU time diff: {counter2-counter} ns")
+	num = int(sys.argv[1])
+	#counter = get_cpu_time_counter()
+	#print(f"CPU time counter: {counter} ns")
+	#counter2 = get_cpu_time_counter()
+	#print(f"CPU time diff: {counter2-counter} ns")
 
-## Uncomment the lines below to run multiple measurement iterations
-	#min_diff=get_min_time_diff(num,filename)
-	#print(f"CPU min diff time: {min_diff} ns")
+#Uncomment the lines below to run multiple measurement iterations
+	min_diff=get_min_time_diff(num,filename)
+	print(f"CPU min diff time: {min_diff} ns")
