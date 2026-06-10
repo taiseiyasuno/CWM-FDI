@@ -6,6 +6,7 @@ so the computation has an observable result.
 
 """
 
+import numpy as np
 import sys
 from typing import List
 
@@ -65,7 +66,7 @@ def matmul_fast3(a: Matrix, b: Matrix, c: Matrix, n: int) -> None:
             for k in range(n):
                 total += row_ai[k] * row_btj[k]
             row_ci[j] = total
-
+    
 
 def checksum(m: Matrix, n: int) -> float:
     total = 0.0
@@ -88,7 +89,7 @@ def usage(prog: str) -> None:
 def parse_args(argv: list[str]) -> tuple[int, int]:
     #Default values to use when none provided.
     n = 128
-    reps = 2
+    reps = 1
 
     if len(argv) > 1:
         n = int(argv[1])

@@ -6,6 +6,9 @@ so the computation has an observable result.
 
 """
 
+
+
+import numpy as np
 import sys
 from typing import List
 
@@ -35,7 +38,6 @@ def matmul_slow(a: Matrix, b: Matrix, c: Matrix, n: int) -> None:
                 total += a[i][k] * b[k][j]
             c[i][j] = total
 
-
 def checksum(m: Matrix, n: int) -> float:
     total = 0.0
     step = (n // 16) + 1
@@ -57,7 +59,7 @@ def usage(prog: str) -> None:
 def parse_args(argv: list[str]) -> tuple[int, int]:
     #Default values to use when none provided.
     n = 128
-    reps = 2
+    reps = 1 
 
     if len(argv) > 1:
         n = int(argv[1])
