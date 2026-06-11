@@ -18,10 +18,10 @@ void hexdump_arr(char* str)
     char* c = str;
     int i = 0;
     while (*c != '\0') {
-        printf("%d: %x\n", i, (uint8_t)*c);
+        printf("0x%lx: %x\n",(uint64_t)c, (uint8_t)*c);
         i++;
         c++;
     }
-    printf("%0d: \\%x\n", i, (uint8_t)*c);
+    printf("0x%lx: \\%x\n", c, (uint8_t)*c);
     return;
 }
