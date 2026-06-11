@@ -100,14 +100,14 @@ int main(int argc, char* argv[])
     uint64_t function_addr = (uint64_t)(steal_password);
     printf("Target Function Ptr: 0x%lx\n", function_addr);
 
-
     // Fill everything up to starting target addr with 0x41 ("A")
     // You need to do this to ensure there are no premature terminator/null bytes
     char evil_str[128];
     for (int j = 0; j < 128; j++) evil_str[j] = 0x41;  // Fill entire buffer
     
-    append_address(evil_str, address_start_byte, function_addr);
-    // hexdump_arr(evil_str);   // Uncomment for debug
+    // append_address(evil_str, address_start_byte, function_addr);
+    append_address(evil_str, 0, 0xdeadbeef);
+    hexdump_arr(evil_str);   // Uncomment for debug
 
     // Call the victim with normal input
     victim("0123456789ABCDE"); // Normal input of expected length == 16. No issues here
