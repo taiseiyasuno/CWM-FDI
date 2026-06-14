@@ -2,6 +2,8 @@
 main.py for most code
 
 
+To do: better convolution implementations
+
 * Components
 -- Naive implementation of convolution
 -- Better implementations of convolution using cache access concepts

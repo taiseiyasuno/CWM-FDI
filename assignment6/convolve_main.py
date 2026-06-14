@@ -1,12 +1,16 @@
 import numpy as np
-from matplotlib import pyplot as plt
+# from matplotlib import pyplot as plt
 import sys
 import time
 import math
 import cv2
 # for only one CNN layer.
 
-img = cv2.imread("assignment6/images/Bodleian_Library.jpg")
+# for windows 
+# img = cv2.imread("assignment6/images/Bodleian_Library.jpg")
+
+# for linux
+img = cv2.imread("images/Bodleian_Library.jpg")
 
 def do_conv(img, size):
     # Resize (comment out if needed)
@@ -47,7 +51,7 @@ def do_conv(img, size):
     input_params = [in_h, in_w] # manually adjust (replace variables with numbers) if needed. (N) HW (C) convention is used.
     # keep in mind that np is row major.
 
-    def convolve_naive(input_params, kernel_params, num_channels, hyperparams):
+    def convolve_naive1(input_params, kernel_params, num_channels, hyperparams):
         in_h = input_params[0]
         in_w = input_params[1]
 
@@ -180,15 +184,16 @@ def do_conv(img, size):
     # plt.show()
     return operations, time_taken
 
+# for single repeated trials
 repeats = 20
 times = np.zeros(repeats)
 for i in range(repeats):
     operations, time_taken = do_conv(img, 200)
     times[i] = time_taken
 print(f"Number of loops needed: {operations}")
-mean_times = np.mean(times)
 median_times = np.median(times)
-print(f"Average time taken: {mean_times} s")
+min_times = np.min(times)
 print(f"Median time taken: {median_times} s")
-print(f"Average time taken per operatins: {mean_times/operations}")
-print(f"Median time taken per operations: {median_times/operations}")
+print(f"Minimum time taken: {min_times} s")
+print(f"Median time taken per loop: {median_times/operations} s")
+print(f"Time taken per loop, using minimum: {min_times/operations} s")
